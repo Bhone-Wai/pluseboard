@@ -1,14 +1,12 @@
-import {AuthBindings} from "@refinedev/core";
+import {AuthProvider} from "@refinedev/core";
 import {API_URL, dataProvider} from "./data";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 export const authCredentials = {
-    email: 'chou@pro.com',
+    email: 'michael.scott@dundermifflin.com',
     password: 'password',
 }
 
-export const authProvider: AuthBindings = {
+export const authProvider: AuthProvider = {
     login: async ({ email }) => {
         try {
             const { data } = await dataProvider.custom({
@@ -18,11 +16,11 @@ export const authProvider: AuthBindings = {
                 meta: {
                     variables: { email },
                     rawQuery: `
-                        mutation Login($email: String) {
+                        mutation Login($email: String!) {
                             login(loginInput: {
                                 email: $email
                             }) {
-                                accessToken
+                                accessToken,
                             }
                         }
                     `,
