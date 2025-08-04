@@ -19,6 +19,8 @@ import {authProvider, dataProvider, liveProvider} from "./providers";
 
 import Layout from "./components/layout";
 
+import {resources} from "@/config/resources";
+
 function App() {
     return (
         <BrowserRouter>
@@ -32,6 +34,7 @@ function App() {
                             notificationProvider={useNotificationProvider}
                             routerProvider={routerBindings}
                             authProvider={authProvider}
+                            resources={resources}
                             options={{
                                 syncWithLocation: true,
                                 warnWhenUnsavedChanges: true,
