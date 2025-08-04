@@ -32,3 +32,16 @@ export const TASK_STAGES_SELECT_QUERY = gql`
     }
   }
 `;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($input: UpdateOneUserInput!) {
+    updateOneUser(input: $input) {
+      id
+      name
+      avatarUrl
+      email
+      phone
+      jobTitle
+    }
+  }
+`;
