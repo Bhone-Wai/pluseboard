@@ -1,5 +1,71 @@
+import {Col, Row} from "antd";
+import {DealsChart, UpcomingEvents} from "@/components";
+import { DashboardTotalCount } from "@/components/home/total-count-card";
+import { data } from "react-router";
+import { useCustom } from "@refinedev/core";
+import { DASHBOARD_TOTAL_COUNTS_QUERY } from "@/graphql/queries";
+
 export function Home() {
+    const { data, isLoading } = useCustom({
+        url: '',
+        method: 'get',
+        meta: {
+            gqlQuery: DASHBOARD_TOTAL_COUNTS_QUERY
+        }
+    })
     return (
-        <div>Home</div>
+        <div>
+            <Row gutter={[32, 32]}>
+                <Col xs={24} sm={24} xl={8}>
+                    <DashboardTotalCount
+                        resource="companies"
+                        isLoading={isLoading}
+                        totalCount={data?.data.companies.totalCount}
+                    />
+                </Col>
+                <Col xs={24} sm={24} xl={8}>
+                    <DashboardTotalCount
+                        resource='contacts'
+                        isLoading={isLoading}
+                        totalCount={data?.data.contacts.totalCount}
+                    />
+                </Col>
+                <Col xs={24} sm={24} xl={8}>
+                    <DashboardTotalCount
+                        resource='deals'
+                        isLoading={isLoading}
+                        totalCount={data?.data.deals.totalCount}
+                    />
+                </Col>
+            </Row>
+
+            <Row
+                gutter={[32, 32]}
+                style={{
+                    marginTop: '32px',
+                }}
+            >
+                <Col
+                    xs={24}
+                    sm={24}
+                    xl={8}
+                    style={{
+                        height: '460px',
+                    }}
+                >
+                    <UpcomingEvents />
+                </Col>
+                <Col
+                    xs={24}
+                    sm={24}
+                    xl={16}
+                    style={{
+                        height: '460px',
+                    }}
+                >
+                    <DealsChart />
+                </Col>
+            </Row>
+        </div>
     )
 }
