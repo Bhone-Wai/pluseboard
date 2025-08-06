@@ -1,6 +1,7 @@
 import {UpcomingEvents} from "@/components/home/upcoming-events";
 import {DealsChart} from "@/components/home/deals-chart";
 import {DashboardTotalCount} from "@/components/home/total-count-card";
+import {LatestActivities} from "@/components/home/latest-activities";
 
 import {UpcomingEventsSkeleton} from "@/components/skeleton/upcoming-events";
 import {AccordionHeaderSkeleton} from "@/components/skeleton/accordion-header";
@@ -12,6 +13,7 @@ export {
     UpcomingEvents,
     DealsChart,
     DashboardTotalCount,
+    LatestActivities,
 
     UpcomingEventsSkeleton,
     AccordionHeaderSkeleton,

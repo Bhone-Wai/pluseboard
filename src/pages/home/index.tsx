@@ -4,6 +4,7 @@ import { DashboardTotalCount } from "@/components/home/total-count-card";
 import { data } from "react-router";
 import { useCustom } from "@refinedev/core";
 import { DASHBOARD_TOTAL_COUNTS_QUERY } from "@/graphql/queries";
+import { LatestActivities } from "@/components/home/latest-activities";
 
 export function Home() {
     const { data, isLoading } = useCustom({
@@ -64,6 +65,17 @@ export function Home() {
                     }}
                 >
                     <DealsChart />
+                </Col>
+            </Row>
+
+            <Row
+                gutter={[32, 32]}
+                style={{
+                    marginTop: '32px'
+                }}
+            >
+                <Col xs={24}>
+                    <LatestActivities />
                 </Col>
             </Row>
         </div>
