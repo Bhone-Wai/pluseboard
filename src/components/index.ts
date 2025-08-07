@@ -5,7 +5,7 @@ import {LatestActivities} from "@/components/home/latest-activities";
 
 import {UpcomingEventsSkeleton} from "@/components/skeleton/upcoming-events";
 import {AccordionHeaderSkeleton} from "@/components/skeleton/accordion-header";
-import {KanbanSkeleton} from "@/components/skeleton/kanban";
+import {KanbanColumnSkeleton} from "@/components/skeleton/kanban";
 import {LatestActivitiesSkeleton} from "@/components/skeleton/latest-activities";
 import {ProjectCardSkeleton} from "@/components/skeleton/project-card";
 
@@ -14,10 +14,9 @@ export {
     DealsChart,
     DashboardTotalCount,
     LatestActivities,
-
+    KanbanColumnSkeleton,
     UpcomingEventsSkeleton,
     AccordionHeaderSkeleton,
-    KanbanSkeleton,
     LatestActivitiesSkeleton,
     ProjectCardSkeleton
 };
