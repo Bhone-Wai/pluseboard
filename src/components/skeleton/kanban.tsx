@@ -1,8 +1,7 @@
-import {Button, Skeleton, Space} from "antd";
-import {MoreOutlined, PlusOutlined} from "@ant-design/icons";
-import React from "react";
+import { Button, Skeleton, Space } from "antd";
+import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
 
-export function KanbanSkeleton({children}: React.PropsWithChildren) {
+export function KanbanColumnSkeleton({ children }: React.PropsWithChildren)  {
     return (
         <div
             style={{
@@ -22,14 +21,20 @@ export function KanbanSkeleton({children}: React.PropsWithChildren) {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Skeleton.Button size={"small"} style={{ width: '125px' }} />
+                    <Skeleton.Button size="small" style={{ width: "125px" }} />
                     <Button
                         disabled
-                        type={"text"}
-                        shape={"circle"}
-                        icon={<MoreOutlined style={{ transform: 'rotate(90deg)' }} />}
+                        type="text"
+                        shape="circle"
+                        icon={
+                            <MoreOutlined
+                                style={{
+                                    transform: "rotate(90deg)",
+                                }}
+                            />
+                        }
                     />
-                    <Button disabled shape={"circle"} icon={<PlusOutlined />} />
+                    <Button disabled shape="circle" icon={<PlusOutlined />} />
                 </Space>
             </div>
             <div
