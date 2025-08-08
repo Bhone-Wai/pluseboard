@@ -1,7 +1,7 @@
 import {KanbanBoard, KanbanBoardContainer} from "@/components/task/kanban/board";
 import {KanbanColumn} from "@/components/task/kanban/column";
 import {KanbanItem} from "@/components/task/kanban/item";
-import {useList} from "@refinedev/core";
+import {useList, useNavigation, useUpdate} from "@refinedev/core";
 
 import React, {useMemo} from "react";
 import {GetFieldsFromList} from "@refinedev/nestjs-query";
@@ -12,6 +12,8 @@ import {KanbanAddCardButton} from "@/components/task/kanban/add-card-button";
 import {KanbanColumnSkeleton, ProjectCardSkeleton} from "@/components";
 
 import {TASK_STAGES_QUERY, TASKS_QUERY} from "@/graphql/queries";
+import {DragEndEvent} from "@dnd-kit/core";
+import {UPDATE_TASK_STAGE_MUTATION} from "@/graphql/mutations";
 
 type Task = GetFieldsFromList<TasksQuery>;
 type TaskStage = GetFieldsFromList<TaskStagesQuery> & { tasks: Task[] };
@@ -56,6 +58,8 @@ export function TaskList({ children }: React.PropsWithChildren) {
         }
     });
 
+    const { mutate: updateTask } = useUpdate();
+
     const taskStages = useMemo(() => {
         if (!tasks?.data || !stages?.data)
             return {
@@ -77,8 +81,36 @@ export function TaskList({ children }: React.PropsWithChildren) {
         }
     }, [stages, tasks]);
 
-    const handleAddCard = (args: { stageId: string }) => {
+    const { replace } = useNavigation();
 
+    const handleAddCard = (args: { stageId: string }) => {
+        const path = args.stageId === 'unassigned' ? '/tasks/new' : `/tasks/new?stageId=${args.stageId}`;
+        replace(path);
+    }
+
+    const handleOnDragEnd = (event: DragEndEvent) => {
+        let stageId = event.over?.id as undefined | null | string;
+        const taskId = event.active.id as string;
+        const taskStageId = event.active.data.current?.stageId;
+
+        if (taskStageId === stageId) return;
+
+        if (stageId === 'unassigned') {
+            stageId = null
+        }
+
+        updateTask({
+            resource: 'tasks',
+            id: taskId,
+            values: {
+                stageId: stageId
+            },
+            successNotification: false,
+            mutationMode: 'optimistic',
+            meta: {
+                gqlMutation: UPDATE_TASK_STAGE_MUTATION
+            }
+        });
     }
 
     const isLoading = isLoadingStages || isLoadingTasks;
@@ -88,7 +120,7 @@ export function TaskList({ children }: React.PropsWithChildren) {
     return (
         <div>
             <KanbanBoardContainer>
-                <KanbanBoard>
+                <KanbanBoard onDragEnd={handleOnDragEnd}>
                     <KanbanColumn
                         id={'unassigned'}
                         title={'unassigned'}

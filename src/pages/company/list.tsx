@@ -45,7 +45,7 @@ export function CompanyList({ children }: React.PropsWithChildren) {
         meta: {
             gqlQuery: COMPANIES_LIST_QUERY,
         }
-    })
+    });
 
     return (
         <div>

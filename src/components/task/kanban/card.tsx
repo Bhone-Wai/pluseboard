@@ -7,6 +7,7 @@ import {TextIcon} from "@/components/text-icon";
 import dayjs from "dayjs";
 import {getDateColor} from "@/utilities/date";
 import {CustomAvatar} from "@/components/custom-avatar";
+import {useDelete, useNavigation} from "@refinedev/core";
 
 type Props = {
     id: string;
@@ -23,7 +24,9 @@ type Props = {
 export function KanbanCard({ id, title, dueDate, users }: React.PropsWithChildren<Props>) {
     const { token } = theme.useToken();
 
-    const edit = () => {};
+    const { edit } = useNavigation();
+
+    const { mutate: deleteTask } = useDelete();
 
     const dropdownItems = useMemo(() => {
         const dropdownItems: MenuProps['items'] = [
@@ -32,7 +35,7 @@ export function KanbanCard({ id, title, dueDate, users }: React.PropsWithChildre
                 key: 1,
                 icon: <EyeOutlined />,
                 onClick: () => {
-                    edit();
+                    edit('tasks', id, 'replace');
                 }
             },
             {
@@ -40,7 +43,15 @@ export function KanbanCard({ id, title, dueDate, users }: React.PropsWithChildre
                 label: 'Delete card',
                 key: 2,
                 icon: <DeleteOutlined />,
-                onClick: () => {}
+                onClick: () => {
+                    deleteTask({
+                        resource: 'tasks',
+                        id,
+                        meta: {
+                            operation: 'task',
+                        }
+                    });
+                }
             }
         ];
 
@@ -73,12 +84,18 @@ export function KanbanCard({ id, title, dueDate, users }: React.PropsWithChildre
             <Card
                 size={"small"}
                 title={<Text ellipsis={{ tooltip: title }}>{title}</ Text>}
-                onClick={() => edit()}
+                onClick={() => edit('tasks', id, 'replace')}
                 extra={
                     <Dropdown
                         trigger={['click']}
                         menu={{
                             items: dropdownItems,
+                            onPointerDown: (e) => {
+                                e.stopPropagation();
+                            },
+                            onClick: (e) => {
+                                e.domEvent.stopPropagation();
+                            },
                         }}
                         placement={'bottom'}
                         arrow={{ pointAtCenter: true }}
@@ -88,6 +105,9 @@ export function KanbanCard({ id, title, dueDate, users }: React.PropsWithChildre
                             shape={'circle'}
                             icon={<MoreOutlined style={{ transform: 'rotate(90deg)' }} />}
                             onPointerDown={(e) => {
+                                e.stopPropagation();
+                            }}
+                            onClick={(e) => {
                                 e.stopPropagation();
                             }}
                         />
