@@ -14,7 +14,17 @@ import routerBindings, {
 import { App as AntdApp } from "antd";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router";
 
-import {Home, Register, Login, ForgotPassword, CompanyList, CompanyCreate, CompanyEdit, TaskList} from "./pages";
+import {
+    Home,
+    Register,
+    Login,
+    ForgotPassword,
+    CompanyList,
+    CompanyCreate,
+    CompanyEdit,
+    TaskList,
+    TaskCreate, TaskEdit
+} from "./pages";
 import {authProvider, dataProvider, liveProvider} from "./providers";
 
 import Layout from "./components/layout";
@@ -59,8 +69,13 @@ function App() {
                                         <Route path={'new'} element={<CompanyCreate />} />
                                         <Route path={'edit/:id'} element={<CompanyEdit />} />
                                     </Route>
-                                    <Route path={'/tasks'}>
-                                        <Route index element={<TaskList />} />
+                                    <Route path={'/tasks'} element={
+                                        <TaskList>
+                                            <Outlet />
+                                        </TaskList>}
+                                    >
+                                        <Route path={'new'} element={<TaskCreate />} />
+                                        <Route path={'edit/:id'} element={<TaskEdit />} />
                                     </Route>
                                 </Route>
                             </Routes>
