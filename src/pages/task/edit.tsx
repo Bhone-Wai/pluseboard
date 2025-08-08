@@ -11,11 +11,12 @@ import {useState} from "react";
 import {DueDateForm} from "@/components/task/form/due-date";
 import {UsersForm} from "@/components/task/form/users";
 import {DescriptionForm} from "@/components/task/form/description";
+import {Task} from "@/graphql/schema.types";
 
 export function TaskEdit() {
     const [activeKey, setActiveKey] = useState<string | undefined>();
 
-    const { modalProps, close, queryResult } = useModalForm({
+    const { modalProps, close, queryResult } = useModalForm<Task>({
         action: "edit",
         defaultVisible: true,
         meta: {

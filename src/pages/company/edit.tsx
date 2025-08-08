@@ -4,21 +4,22 @@ import {UPDATE_COMPANY_MUTATION} from "@/graphql/mutations";
 import {CustomAvatar} from "@/components/custom-avatar";
 import {getNameInitials} from "@/utilities/get-name-initials";
 import {USERS_SELECT_QUERY} from "@/graphql/queries";
-import {GetFieldsFromList} from "@refinedev/nestjs-query";
-import {UsersSelectQuery} from "@/graphql/types";
+import {GetFields, GetFieldsFromList, GetVariables} from "@refinedev/nestjs-query";
+import {UpdateCompanyMutation, UpdateCompanyMutationVariables, UsersSelectQuery} from "@/graphql/types";
 import {SelectOptionWithAvatar} from "@/components/select-option-with-avatar";
 import {businessTypeOptions, companySizeOptions, industryOptions} from "@/constants";
 import {CompanyContactsTable} from "@/pages/company/contacts-table";
+import {HttpError} from "@refinedev/core";
 
 export function CompanyEdit() {
-    const { saveButtonProps, formProps, formLoading, queryResult } = useForm({
+    const { saveButtonProps, formProps, formLoading, query: queryResult } = useForm<GetFields<UpdateCompanyMutation>, HttpError, GetVariables<UpdateCompanyMutationVariables>>({
         redirect: false,
         meta: {
             gqlMutation: UPDATE_COMPANY_MUTATION,
         }
     });
 
-    const { name, avatarUrl } = queryResult?.data?.data || [];
+    const { avatarUrl, name } = queryResult?.data?.data || {};
 
     const { selectProps, queryResult: queryResultUser } = useSelect<GetFieldsFromList<UsersSelectQuery>>({
         resource: 'users',

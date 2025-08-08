@@ -1,5 +1,5 @@
 import {CreateButton, DeleteButton, EditButton, FilterDropdown, List, useTable} from "@refinedev/antd";
-import {getDefaultFilter, useGo} from "@refinedev/core";
+import {getDefaultFilter, HttpError, useGo} from "@refinedev/core";
 import {Input, Space, Table} from "antd";
 import {COMPANIES_LIST_QUERY} from "@/graphql/queries";
 import {SearchOutlined} from "@ant-design/icons";
@@ -11,7 +11,8 @@ import React from "react";
 
 export function CompanyList({ children }: React.PropsWithChildren) {
     const go = useGo();
-    const { tableProps, filters } = useTable({
+
+    const { tableProps, filters } = useTable<Company, HttpError, Company>({
         resource: 'companies',
         onSearch: (values) => {
             return [
